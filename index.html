@@ -7,7 +7,7 @@
     <div class="header">
         <h5 class="">Coppyright by CHP</h5>
     </div>
-    <title>Quiz Model OSI and TCP/IP</title>
+    <title>Quiz Application</title>
 
     <style>
         .header h5 {
@@ -99,7 +99,7 @@
 
 <body>
     <div class="container">
-        <h1>Model OSI and TCP/IP Quiz</h1>
+        <h1>Application Quiz</h1>
         <div id="quiz"></div>
         <button class="btn" onclick="checkAnswers()">Submit</button>
         <div id="result" class="result"></div>
@@ -360,6 +360,68 @@
                 ],
                 "answer": "A) Địa chỉ IP của server và port",
                 "explanation": "Client cần biết cả địa chỉ IP và port của server để thiết lập kết nối."
+            },
+            {
+                "question": "Giao thức nào sau đây được sử dụng để gửi email từ server đến client?",
+                "options": ["A) SMTP", "B) POP3", "C) IMAP", "D) FTP"],
+                "answer": "B) POP3",
+                "explanation": "POP3 (Post Office Protocol) được sử dụng để tải email từ server về client."
+            },
+            {
+                "question": "Trong mô hình Client-Server, ai là người gửi yêu cầu?",
+                "options": ["A) Server", "B) Client", "C) Router", "D) Switch"],
+                "answer": "B) Client",
+                "explanation": "Client là thiết bị gửi yêu cầu đến server để nhận dịch vụ."
+            },
+            {
+                "question": "Khi một client gửi yêu cầu đến server qua HTTP, yêu cầu này thường được gửi dưới dạng gì?",
+                "options": ["A) Gói tin", "B) Tệp tin", "C) Chuỗi ký tự", "D) Địa chỉ IP"],
+                "answer": "C) Chuỗi ký tự",
+                "explanation": "Yêu cầu HTTP được gửi dưới dạng chuỗi ký tự, mô tả hành động và địa chỉ."
+            },
+            {
+                "question": "Giao thức nào sau đây sử dụng port 21?",
+                "options": ["A) HTTP", "B) FTP", "C) SMTP", "D) DNS"],
+                "answer": "B) FTP",
+                "explanation": "Port 21 là port chuẩn cho giao thức FTP (File Transfer Protocol)."
+            },
+            {
+                "question": "Khi server gửi phản hồi về cho client, nó sẽ gửi mã trạng thái nào để chỉ ra rằng yêu cầu đã thành công?",
+                "options": ["A) 404", "B) 500", "C) 200", "D) 403"],
+                "answer": "C) 200",
+                "explanation": "Mã trạng thái 200 OK cho biết rằng yêu cầu đã được xử lý thành công."
+            },
+            {
+                "question": "Giao thức nào sau đây cho phép client truy cập vào email mà không cần tải về?",
+                "options": ["A) POP3", "B) IMAP", "C) SMTP", "D) FTP"],
+                "answer": "B) IMAP",
+                "explanation": "IMAP (Internet Message Access Protocol) cho phép client truy cập vào email trên server mà không cần tải về."
+            },
+            {
+                "question": "Khi một server cần gửi dữ liệu đến nhiều client cùng một lúc, nó có thể sử dụng giao thức nào?",
+                "options": ["A) TCP", "B) UDP", "C) HTTP", "D) FTP"],
+                "answer": "B) UDP",
+                "explanation": "UDP cho phép gửi dữ liệu đến nhiều client cùng một lúc mà không cần thiết lập kết nối."
+            },
+            {
+                "question": "Khi một client muốn gửi một tệp lớn đến server, giao thức nào sẽ được ưu tiên sử dụng?",
+                "options": ["A) HTTP", "B) FTP", "C) SMTP", "D) DNS"],
+                "answer": "B) FTP",
+                "explanation": "FTP là giao thức được tối ưu hóa cho việc truyền tải tệp lớn."
+            },
+            {
+                "question": "Trong giao thức TCP, điều gì xảy ra trong giai đoạn 'teardown'?",
+                "options": ["A) Thiết lập kết nối mới", "B) Đóng kết nối giữa client và server", "C) Gửi dữ liệu",
+                    "D) Nhận dữ liệu"
+                ],
+                "answer": "B) Đóng kết nối giữa client và server",
+                "explanation": "Giai đoạn 'teardown' là quá trình đóng kết nối giữa client và server."
+            },
+            {
+                "question": "Giao thức nào sau đây thường được sử dụng để truyền tải video trực tuyến?",
+                "options": ["A) FTP", "B) HTTP", "C) RTP", "D) SMTP"],
+                "answer": "C) RTP",
+                "explanation": "RTP (Real-time Transport Protocol) được sử dụng cho truyền tải video và âm thanh trong các ứng dụng trực tuyến."
             },
             {
                 "question": "Giao thức nào sau đây được sử dụng để gửi email từ server đến client?",
