@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <div class="header">
+        <h5 class="">Coppyright by CHP</h5>
+    </div>
+    <title>Quiz Model OSI and TCP/IP</title>
+
+    <style>
+        .header h5 {
+            font-style: italic;
+            text-align: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question-box {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #f9f9f9;
+        }
+
+        .question {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .answers {
+            list-style: none;
+            padding: 0;
+        }
+
+        .answers li {
+            margin: 5px 0;
+        }
+
+        .btn {
+            margin-top: 15px;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #fff;
+            background: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .result {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+            color: #28a745;
+        }
+
+        .result.error {
+            color: #dc3545;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #28a745;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Model OSI and TCP/IP Quiz</h1>
+        <div id="quiz"></div>
+        <button class="btn" onclick="checkAnswers()">Submit</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const quizData = [{
+                "question": "Tầng nào trong mô hình OSI cung cấp dịch vụ mạng cho người dùng cuối?",
+                "options": ["A) Tầng vật lý", "B) Tầng liên kết dữ liệu", "C) Tầng mạng", "D) Tầng ứng dụng"],
+                "answer": "D) Tầng ứng dụng",
+                "explanation": "Tầng ứng dụng là tầng cao nhất trong mô hình OSI, cung cấp các dịch vụ mạng cho người dùng cuối."
+            },
+            {
+                "question": "Dịch vụ nào sau đây không thuộc tầng ứng dụng?",
+                "options": ["A) E-mail", "B) FTP", "C) TCP", "D) Web"],
+                "answer": "C) TCP",
+                "explanation": "TCP là giao thức thuộc tầng transport, không phải tầng ứng dụng."
+            },
+            {
+                "question": "Kiến trúc nào sau đây là kiến trúc phổ biến của ứng dụng mạng?",
+                "options": ["A) Client-Server", "B) Peer-to-Peer", "C) Cả A và B", "D) Không có kiến trúc nào cả"],
+                "answer": "C) Cả A và B",
+                "explanation": "Cả hai kiến trúc Client-Server và Peer-to-Peer đều được sử dụng trong các ứng dụng mạng."
+            },
+            {
+                "question": "Trong mô hình Client-Server, ai là người gửi yêu cầu?",
+                "options": ["A) Server", "B) Client", "C) Router", "D) Switch"],
+                "answer": "B) Client",
+                "explanation": "Client là thiết bị gửi yêu cầu đến Server để nhận dịch vụ."
+            },
+            {
+                "question": "Port nào sau đây được sử dụng cho dịch vụ FTP?",
+                "options": ["A) 21", "B) 80", "C) 25", "D) 443"],
+                "answer": "A) 21",
+                "explanation": "Port 21 là port chuẩn cho dịch vụ FTP."
+            },
+            {
+                "question": "Giao thức nào là dịch vụ hướng kết nối?",
+                "options": ["A) UDP", "B) TCP", "C) ICMP", "D) ARP"],
+                "answer": "B) TCP",
+                "explanation": "TCP cung cấp dịch vụ hướng kết nối, đảm bảo dữ liệu được truyền một cách đáng tin cậy."
+            },
+            {
+                "question": "Dịch vụ nào sau đây là không đáng tin cậy?",
+                "options": ["A) TCP", "B) HTTP", "C) FTP", "D) UDP"],
+                "answer": "D) UDP",
+                "explanation": "UDP là giao thức không đảm bảo độ tin cậy trong việc truyền dữ liệu."
+            },
+            {
+                "question": "Khi nào một socket được tạo ra trong ứng dụng mạng?",
+                "options": ["A) Khi có yêu cầu từ client", "B) Khi server khởi động", "C) Khi client gửi dữ liệu",
+                    "D) Khi kết nối bị đóng"
+                ],
+                "answer": "B) Khi server khởi động",
+                "explanation": "Socket được tạo ra để lắng nghe kết nối khi server khởi động."
+            },
+            {
+                "question": "Địa chỉ nào sau đây là địa chỉ IP động?",
+                "options": ["A) 192.168.1.1", "B) 10.0.0.1", "C) 172.16.0.5", "D) Địa chỉ IP động không cố định"],
+                "answer": "D) Địa chỉ IP động không cố định",
+                "explanation": "Địa chỉ IP động có thể thay đổi theo thời gian, không cố định như địa chỉ IP tĩnh."
+            },
+            {
+                "question": "Chức năng nào của server là chính?",
+                "options": ["A) Gửi yêu cầu", "B) Nhận và xử lý yêu cầu", "C) Tạo socket", "D) Đóng kết nối"],
+                "answer": "B) Nhận và xử lý yêu cầu",
+                "explanation": "Server có nhiệm vụ nhận và xử lý các yêu cầu từ client."
+            },
+            {
+                "question": "Giao thức nào sau đây được sử dụng để gửi email?",
+                "options": ["A) FTP", "B) SMTP", "C) HTTP", "D) SNMP"],
+                "answer": "B) SMTP",
+                "explanation": "SMTP (Simple Mail Transfer Protocol) là giao thức chính để gửi email."
+            },
+            {
+                "question": "Khi nào một client sử dụng địa chỉ IP động?",
+                "options": ["A) Khi kết nối với server", "B) Khi gửi dữ liệu", "C) Khi không có địa chỉ IP tĩnh",
+                    "D) Khi server không phản hồi"
+                ],
+                "answer": "C) Khi không có địa chỉ IP tĩnh",
+                "explanation": "Client sử dụng địa chỉ IP động khi không có địa chỉ IP tĩnh được cấp phát."
+            },
+            {
+                "question": "Port nào sau đây thường được sử dụng cho dịch vụ HTTP?",
+                "options": ["A) 25", "B) 80", "C) 443", "D) 21"],
+                "answer": "B) 80",
+                "explanation": "Port 80 là port chuẩn cho giao thức HTTP."
+            },
+            {
+                "question": "Giao thức nào sau đây không yêu cầu kết nối trước khi truyền dữ liệu?",
+                "options": ["A) TCP", "B) UDP", "C) SCTP", "D) FTP"],
+                "answer": "B) UDP",
+                "explanation": "UDP là giao thức không yêu cầu thiết lập kết nối trước khi truyền dữ liệu."
+            },
+            {
+                "question": "Trong mô hình Client-Server, ai là người cung cấp dịch vụ?",
+                "options": ["A) Client", "B) Server", "C) Router", "D) Switch"],
+                "answer": "B) Server",
+                "explanation": "Server là thiết bị cung cấp dịch vụ cho client."
+            },
+            {
+                "question": "Khi nào một socket được đóng?",
+                "options": ["A) Khi server khởi động", "B) Khi client gửi yêu cầu",
+                    "C) Khi kết thúc phiên làm việc", "D) Khi server nhận dữ liệu"
+                ],
+                "answer": "C) Khi kết thúc phiên làm việc",
+                "explanation": "Socket được đóng khi kết thúc phiên làm việc giữa client và server."
+            },
+            {
+                "question": "Dịch vụ nào sau đây thuộc tầng ứng dụng?",
+                "options": ["A) DNS", "B) IP", "C) TCP", "D) Ethernet"],
+                "answer": "A) DNS",
+                "explanation": "DNS (Domain Name System) là dịch vụ thuộc tầng ứng dụng."
+            },
+            {
+                "question": "Khi client muốn gửi dữ liệu đến server, nó sẽ sử dụng phương thức nào?",
+                "options": ["A) send()", "B) receive()", "C) connect()", "D) listen()"],
+                "answer": "A) send()",
+                "explanation": "Phương thức send() được sử dụng để gửi dữ liệu từ client đến server."
+            },
+            {
+                "question": "Tầng nào trong mô hình OSI đảm bảo độ tin cậy trong truyền tải dữ liệu?",
+                "options": ["A) Tầng ứng dụng", "B) Tầng mạng", "C) Tầng transport", "D) Tầng liên kết dữ liệu"],
+                "answer": "C) Tầng transport",
+                "explanation": "Tầng transport (như TCP) đảm bảo độ tin cậy trong truyền tải dữ liệu."
+            },
+            {
+                "question": "Khi server lắng nghe yêu cầu từ client, nó sẽ sử dụng phương thức nào?",
+                "options": ["A) bind()", "B) listen()", "C) accept()", "D) connect()"],
+                "answer": "B) listen()",
+                "explanation": "Phương thức listen() cho phép server lắng nghe yêu cầu kết nối từ client."
+            },
+            {
+                "question": "Giao thức nào được sử dụng để truyền tải video hội nghị?",
+                "options": ["A) FTP", "B) HTTP", "C) RTP", "D) SMTP"],
+                "answer": "C) RTP",
+                "explanation": "RTP (Real-time Transport Protocol) thường được sử dụng cho truyền tải video và âm thanh trong các ứng dụng hội nghị."
+            },
+            {
+                "question": "Port nào sau đây được sử dụng cho HTTPS?",
+                "options": ["A) 80", "B) 443", "C) 21", "D) 25"],
+                "answer": "B) 443",
+                "explanation": "Port 443 là port chuẩn cho giao thức HTTPS, phiên bản bảo mật của HTTP."
+            },
+            {
+                "question": "Giao thức nào sau đây là không có trạng thái (stateless)?",
+                "options": ["A) HTTP", "B) FTP", "C) TCP", "D) SMTP"],
+                "answer": "A) HTTP",
+                "explanation": "Giao thức HTTP là không có trạng thái, nghĩa là mỗi yêu cầu được xử lý độc lập."
+            },
+            {
+                "question": "Khi một client gửi yêu cầu đến server, yêu cầu này sẽ được gửi đến địa chỉ nào?",
+                "options": ["A) Chỉ địa chỉ IP", "B) Địa chỉ IP và Port", "C) Chỉ Port", "D) Địa chỉ MAC"],
+                "answer": "B) Địa chỉ IP và Port",
+                "explanation": "Yêu cầu từ client được gửi đến server thông qua địa chỉ IP và port."
+            },
+            {
+                "question": "Trong mô hình Peer-to-Peer, ai có thể hoạt động như cả client và server?",
+                "options": ["A) Chỉ server", "B) Chỉ client", "C) Cả client và server", "D) Không có ai"],
+                "answer": "C) Cả client và server",
+                "explanation": "Trong mô hình Peer-to-Peer, mỗi nút có thể hoạt động như cả client và server."
+            },
+            {
+                "question": "Giao thức nào sau đây được sử dụng để phân giải tên miền thành địa chỉ IP?",
+                "options": ["A) FTP", "B) SMTP", "C) DNS", "D) SNMP"],
+                "answer": "C) DNS",
+                "explanation": "DNS (Domain Name System) được sử dụng để phân giải tên miền thành địa chỉ IP."
+            },
+            {
+                "question": "Khi một client muốn kết nối đến server, nó sẽ sử dụng phương thức nào để thiết lập kết nối?",
+                "options": ["A) bind()", "B) connect()", "C) listen()", "D) send()"],
+                "answer": "B) connect()",
+                "explanation": "Phương thức connect() được sử dụng để thiết lập kết nối từ client đến server."
+            },
+            {
+                "question": "Trong một ứng dụng sử dụng TCP, dữ liệu sẽ được truyền tải như thế nào?",
+                "options": ["A) Gửi từng gói mà không cần kiểm tra",
+                    "B) Gửi từng gói và đảm bảo thứ tự và độ tin cậy", "C) Gửi một lần và không cần phản hồi",
+                    "D) Gửi mà không cần thiết lập kết nối"
+                ],
+                "answer": "B) Gửi từng gói và đảm bảo thứ tự và độ tin cậy",
+                "explanation": "TCP đảm bảo rằng dữ liệu được truyền tải một cách đáng tin cậy và theo thứ tự."
+            },
+            {
+                "question": "Khi một server chấp nhận một kết nối từ client, phương thức nào được sử dụng?",
+                "options": ["A) listen()", "B) accept()", "C) bind()", "D) connect()"],
+                "answer": "B) accept()",
+                "explanation": "Phương thức accept() được sử dụng để chấp nhận một kết nối đến từ client."
+            },
+            {
+                "question": "Dịch vụ nào sau đây thường được sử dụng để chia sẻ tệp tin giữa các máy tính?",
+                "options": ["A) HTTP", "B) FTP", "C) SMTP", "D) DNS"],
+                "answer": "B) FTP",
+                "explanation": "FTP (File Transfer Protocol) là giao thức được sử dụng để chia sẻ và truyền tải tệp tin giữa các máy tính."
+            },
+            {
+                "question": "Dịch vụ nào sau đây cho phép người dùng gửi và nhận email?",
+                "options": ["A) HTTP", "B) FTP", "C) SMTP", "D) POP3"],
+                "answer": "C) SMTP",
+                "explanation": "SMTP (Simple Mail Transfer Protocol) là giao thức chính dùng để gửi email từ client đến server."
+            },
+            {
+                "question": "Địa chỉ nào sau đây là địa chỉ IP tĩnh?",
+                "options": ["A) 192.168.1.100", "B) 10.0.0.2 (cấp phát từ DHCP)",
+                    "C) 172.16.0.5 (cấp phát từ DHCP)", "D) 192.0.2.1 (địa chỉ không sử dụng)"
+                ],
+                "answer": "A) 192.168.1.100",
+                "explanation": "Địa chỉ IP tĩnh là địa chỉ được gán cố định cho một thiết bị và không thay đổi."
+            },
+            {
+                "question": "Trong giao thức TCP, quá trình nào sau đây được gọi là 'three-way handshake'?",
+                "options": ["A) Kết nối, truyền dữ liệu, đóng kết nối", "B) SYN, SYN-ACK, ACK",
+                    "C) Đăng ký, xác thực, kết nối", "D) Gửi yêu cầu, nhận phản hồi, đóng kết nối"
+                ],
+                "answer": "B) SYN, SYN-ACK, ACK",
+                "explanation": "'Three-way handshake' trong TCP bao gồm ba bước: gửi SYN, nhận SYN-ACK, và gửi ACK để thiết lập kết nối."
+            },
+            {
+                "question": "Khi một client gửi một yêu cầu HTTP, nó thường gửi yêu cầu đến port nào của server?",
+                "options": ["A) 21", "B) 25", "C) 80", "D) 443"],
+                "answer": "C) 80",
+                "explanation": "Port 80 là port chuẩn cho giao thức HTTP mà client gửi yêu cầu đến server."
+            },
+            {
+                "question": "Giao thức nào sau đây được sử dụng để truyền tải dữ liệu giữa các máy tính mà không đảm bảo độ tin cậy?",
+                "options": ["A) TCP", "B) UDP", "C) HTTP", "D) FTP"],
+                "answer": "B) UDP",
+                "explanation": "UDP là giao thức không đảm bảo độ tin cậy trong việc truyền tải dữ liệu."
+            },
+            {
+                "question": "Dịch vụ nào sau đây không yêu cầu thiết lập kết nối trước khi truyền dữ liệu?",
+                "options": ["A) FTP", "B) SMTP", "C) UDP", "D) TCP"],
+                "answer": "C) UDP",
+                "explanation": "UDP là giao thức không yêu cầu thiết lập kết nối trước khi truyền dữ liệu."
+            },
+            {
+                "question": "Khi một server cần biết địa chỉ IP của client, nó có thể sử dụng dịch vụ nào?",
+                "options": ["A) DHCP", "B) DNS", "C) ARP", "D) FTP"],
+                "answer": "C) ARP",
+                "explanation": "ARP (Address Resolution Protocol) được sử dụng để ánh xạ địa chỉ IP thành địa chỉ MAC."
+            },
+            {
+                "question": "Giao thức nào sau đây được sử dụng để truyền tải tệp tin một cách an toàn?",
+                "options": ["A) HTTP", "B) FTP", "C) SFTP", "D) SMTP"],
+                "answer": "C) SFTP",
+                "explanation": "SFTP (SSH File Transfer Protocol) là giao thức an toàn để truyền tải tệp tin."
+            },
+            {
+                "question": "Trong một ứng dụng mạng, khi server không thể xử lý yêu cầu, nó sẽ gửi phản hồi nào?",
+                "options": ["A) 200 OK", "B) 404 Not Found", "C) 500 Internal Server Error", "D) 403 Forbidden"],
+                "answer": "C) 500 Internal Server Error",
+                "explanation": "Mã trạng thái 500 cho biết rằng có lỗi xảy ra trên server khi xử lý yêu cầu."
+            },
+            {
+                "question": "Khi một client muốn kết nối đến một server qua giao thức TCP, nó cần biết điều gì?",
+                "options": ["A) Địa chỉ IP của server và port", "B) Chỉ địa chỉ IP của server",
+                    "C) Chỉ port của server", "D) Địa chỉ MAC của server"
+                ],
+                "answer": "A) Địa chỉ IP của server và port",
+                "explanation": "Client cần biết cả địa chỉ IP và port của server để thiết lập kết nối."
+            },
+            {
+                "question": "Giao thức nào sau đây được sử dụng để gửi email từ server đến client?",
+                "options": ["A) SMTP", "B) POP3", "C) IMAP", "D) FTP"],
+                "answer": "B) POP3",
+                "explanation": "POP3 (Post Office Protocol) được sử dụng để tải email từ server về client."
+            },
+            {
+                "question": "Trong mô hình Client-Server, ai là người gửi yêu cầu?",
+                "options": ["A) Server", "B) Client", "C) Router", "D) Switch"],
+                "answer": "B) Client",
+                "explanation": "Client là thiết bị gửi yêu cầu đến server để nhận dịch vụ."
+            },
+            {
+                "question": "Khi một client gửi yêu cầu đến server qua HTTP, yêu cầu này thường được gửi dưới dạng gì?",
+                "options": ["A) Gói tin", "B) Tệp tin", "C) Chuỗi ký tự", "D) Địa chỉ IP"],
+                "answer": "C) Chuỗi ký tự",
+                "explanation": "Yêu cầu HTTP được gửi dưới dạng chuỗi ký tự, mô tả hành động và địa chỉ."
+            },
+            {
+                "question": "Giao thức nào sau đây sử dụng port 21?",
+                "options": ["A) HTTP", "B) FTP", "C) SMTP", "D) DNS"],
+                "answer": "B) FTP",
+                "explanation": "Port 21 là port chuẩn cho giao thức FTP (File Transfer Protocol)."
+            },
+            {
+                "question": "Khi server gửi phản hồi về cho client, nó sẽ gửi mã trạng thái nào để chỉ ra rằng yêu cầu đã thành công?",
+                "options": ["A) 404", "B) 500", "C) 200", "D) 403"],
+                "answer": "C) 200",
+                "explanation": "Mã trạng thái 200 OK cho biết rằng yêu cầu đã được xử lý thành công."
+            },
+            {
+                "question": "Giao thức nào sau đây cho phép client truy cập vào email mà không cần tải về?",
+                "options": ["A) POP3", "B) IMAP", "C) SMTP", "D) FTP"],
+                "answer": "B) IMAP",
+                "explanation": "IMAP (Internet Message Access Protocol) cho phép client truy cập vào email trên server mà không cần tải về."
+            },
+            {
+                "question": "Khi một server cần gửi dữ liệu đến nhiều client cùng một lúc, nó có thể sử dụng giao thức nào?",
+                "options": ["A) TCP", "B) UDP", "C) HTTP", "D) FTP"],
+                "answer": "B) UDP",
+                "explanation": "UDP cho phép gửi dữ liệu đến nhiều client cùng một lúc mà không cần thiết lập kết nối."
+            },
+            {
+                "question": "Khi một client muốn gửi một tệp lớn đến server, giao thức nào sẽ được ưu tiên sử dụng?",
+                "options": ["A) HTTP", "B) FTP", "C) SMTP", "D) DNS"],
+                "answer": "B) FTP",
+                "explanation": "FTP là giao thức được tối ưu hóa cho việc truyền tải tệp lớn."
+            },
+            {
+                "question": "Trong giao thức TCP, điều gì xảy ra trong giai đoạn 'teardown'?",
+                "options": ["A) Thiết lập kết nối mới", "B) Đóng kết nối giữa client và server", "C) Gửi dữ liệu",
+                    "D) Nhận dữ liệu"
+                ],
+                "answer": "B) Đóng kết nối giữa client và server",
+                "explanation": "Giai đoạn 'teardown' là quá trình đóng kết nối giữa client và server."
+            },
+            {
+                "question": "Giao thức nào sau đây thường được sử dụng để truyền tải video trực tuyến?",
+                "options": ["A) FTP", "B) HTTP", "C) RTP", "D) SMTP"],
+                "answer": "C) RTP",
+                "explanation": "RTP (Real-time Transport Protocol) được sử dụng cho truyền tải video và âm thanh trong các ứng dụng trực tuyến."
+            }
+        ];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1)); // Lấy chỉ số ngẫu nhiên
+                [array[i], array[j]] = [array[j], array[i]]; // Hoán đổi vị trí
+            }
+            return array;
+        }
+
+        const quizContainer = document.getElementById("quiz");
+
+        function loadQuiz() {
+            shuffleArray(quizData);
+            quizData.forEach((item, index) => {
+                const questionBox = document.createElement("div");
+                questionBox.classList.add("question-box");
+
+                questionBox.innerHTML = `
+          <div class="question">${index + 1}. ${item.question}</div>
+          <ul class="answers">
+            ${item.options
+              .map(
+                (option, i) =>
+                  `<li>
+                    <label>
+                      <input type="radio" name="question${index}" value="${i}">
+                      ${option}
+                    </label>
+                  </li>`
+              )
+              .join("")}
+          </ul>
+          <button class="btn" onclick="showExplanation(${index})">Xem đáp án và lời giải</button>
+          <div id="explanation${index}" class="explanation hidden">
+            Đáp án đúng: ${item.answer}<br>
+            Lời giải: ${item.explanation}
+          </div>
+        `;
+
+                quizContainer.appendChild(questionBox);
+            });
+        }
+
+        function showExplanation(index) {
+            const explanation = document.getElementById(`explanation${index}`);
+            if (explanation.classList.contains("hidden")) {
+                explanation.classList.remove("hidden");
+            } else {
+                explanation.classList.add("hidden");
+            }
+        }
+
+        const resultContainer = document.getElementById("result");
+
+        function checkAnswers() {
+            let score = 0;
+
+            quizData.forEach((item, index) => {
+                const selected = document.querySelector(
+                    `input[name="question${index}"]:checked`
+                );
+                if (selected && parseInt(selected.value) === item.correct) {
+                    score++;
+                }
+            });
+
+            if (score === quizData.length) {
+                resultContainer.textContent = `Perfect! You scored ${score}/${quizData.length}.`;
+                resultContainer.className = "result";
+            } else {
+                resultContainer.textContent = `You scored ${score}/${quizData.length}. Try again!`;
+                resultContainer.className = "result error";
+            }
+        }
+
+        loadQuiz();
+    </script>
+</body>
+
+</html>
